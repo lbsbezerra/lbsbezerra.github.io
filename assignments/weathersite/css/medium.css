@@ -1,0 +1,44 @@
+@media only screen and (min-width: 35em) {
+
+   
+    
+/* Gallery for Tablets */
+
+
+    
+	div.theGallery {
+        grid-template-columns: 1fr 1fr;
+        width: 50%;
+    }
+    
+    
+    	div.theGallery figure:hover {
+		box-shadow: 5px 10px 10px gray;
+        opacity: .5;
+        border-radius: 5px 50px
+}
+
+
+
+div.theGallery figure img{ 
+    border-radius: 5px 50px;
+    margin-left: 1px;
+    height: 60%;
+    
+    
+}
+
+#beach {
+    width: 48%;
+}
+
+
+
+footer {
+    width: 40%;
+    
+    
+}
+
+
+} 

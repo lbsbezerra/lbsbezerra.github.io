@@ -1,0 +1,141 @@
+
+
+body {
+    font-family: 'Merriweather Sans', sans-serif;
+    font-size: 18px;
+    padding: 0px;
+    margin:0px;
+}
+
+header {
+    background-color: #2d1fa8;
+    text-align: center;
+    padding: 0.5rem;
+    color: white;
+
+}
+
+header>img {
+    width: 150px;
+    height: auto;
+    vertical-align: middle;
+    text-align: center;
+
+}
+
+.headertext {
+    display: inline-block;
+    vertical-align: middle;
+
+}
+
+.headertext h1 {
+    font-size: 3rem;
+}
+
+.motto {
+    font-size: 1.1rem;
+    color: #ffffff;
+    font-style: italic;
+}
+
+
+/* Responsive Menu CSS*/
+
+* { margin: 0; padding: 0;}
+body { background-color: #ddd; }
+header { background-color: #bbb; text-align: center;}
+h1 { padding: .5rem; }
+
+nav {	margin: 0 auto;	max-width: 760px; background-color: #000;	}
+.navigation { list-style: none; text-align: center; }
+  .navigation li:first-child { display: block;}
+  .navigation li { display: none;}
+  .navigation a {	display: block;	color: #fff; padding: .75rem;	text-align: center;	text-decoration: none;}
+  .navigation a:hover {	color: #000; background-color: #fff; font-weight: 700;	}
+
+/* the onclick JS toggles the .responsive class from display none (.navigation li) to display block because the repsonsive class is added to the end of the class list like this in HTML Line #6.
+  <ul class="navigation responsive">
+  */
+	.responsive li { display: block; }
+
+/* Media Query for medium + screens */
+@media only screen and (min-width: 45em) {
+  .navigation li:first-child { display: none;	}
+	.navigation li { display: inline-block; margin-right: 1rem;}	
+	.navigation li a { color: yellow;}
+}
+
+/* End of the responsive from Codepen */
+
+  @media screen and (max-width: 600px) {  
+    .HeroImage img {
+        width: 100%;
+    }
+  }
+
+
+
+
+  @media screen and (max-width: 600px) {  
+    .FiveDayForecast {
+        display: none;
+    }
+
+
+  }
+
+  @media screen and (max-width: 600px) {  
+    .headertext h1 {
+        font-size: 100%;
+    }
+
+  }
+
+  @media screen and (max-width: 600px) {  
+    .FirstHeader img {
+        width:25%;
+    }
+
+  }
+
+  @media screen and (max-width: 600px) {  
+    p {
+        font-size: 75%;
+    }
+
+  }
+
+
+
+
+
+  
+
+/* End of the responsive menu and elements CSS with Media queries */
+
+  .TownName {
+    text-align: center;
+
+  }
+
+  .HeroImage {
+      
+      background-color: white;
+
+  }
+
+  article {
+      text-align: center;
+  }
+
+  section {
+      text-align: center;
+
+  }
+
+  footer {
+    text-align: center;
+  }
+
+  
