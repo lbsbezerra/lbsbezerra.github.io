@@ -4,79 +4,181 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pokémon Question Card Battle</title>
-    <!-- Load Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Load Inter Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <!-- Load Tailwind CSS --><script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load Inter (UI) and Roboto Condensed (Question) Fonts --><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Roboto+Condensed:wght@700&display=swap" rel="stylesheet">
     <style>
-        /* Custom styles for Dark Mode and TCG Theme */
+        /* Base styles */
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Inter', sans-serif; /* UI Font */
             background-color: #1f2937; /* Dark background */
             color: #f3f4f6; /* Light text color */
+            overflow-x: hidden; /* Prevent horizontal scroll on small devices */
         }
-        .card {
-            /* Dark Material Design shadow */
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
-            transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
-            border: 1px solid #374151; /* Darker border */
-            min-height: 250px;
-        }
-        .card:hover {
-             /* Subtle lift on hover */
-             box-shadow: 0 12px 20px rgba(0, 0, 0, 0.5);
-        }
-        .question-text {
-            /* TCG Gold/Yellow for contrast */
-            color: #ffcc00; 
-        }
+        
+        /* Button Style */
         .btn-primary {
-            /* Material-style button */
             transition: all 0.15s ease-in-out;
             letter-spacing: 0.05em;
         }
         .btn-primary:hover {
             transform: translateY(-1px);
-            /* Lighter shadow for hover effect */
-            box-shadow: 0 4px 6px rgba(255, 255, 255, 0.3), 0 1px 3px rgba(255, 255, 255, 0.1);
+            /* Dark shadow fix (accessible) */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6), 0 1px 3px rgba(0, 0, 0, 0.4);
+        }
+
+        /* --- Authentic Pokémon Basic Card Styles --- */
+
+        .pokemon-card-outer {
+            /* Main card frame: rounded rectangle with a dark border effect */
+            background-color: #374151; /* Main card body color, typically a dark grey */
+            padding: 4px; /* The thickness of the outer black border */
+            border-radius: 15px; /* Rounded corners for the whole card */
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.7), 0 5px 10px rgba(0, 0, 0, 0.4);
+            transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
+            border: 2px solid #000; /* Outer black border */
+            max-width: 320px; /* Standard TCG card width for desktop */
+            width: 95%; /* Responsive width for mobile */
+            aspect-ratio: 3.5 / 4.9; /* Standard TCG card aspect ratio */
+            display: flex;
+            flex-direction: column;
+            overflow: hidden; /* Ensure rounded corners clip content */
+        }
+        
+        /* Card Top Section (BASIC / Name bar) */
+        .card-top-bar {
+            background: linear-gradient(to right, #4b5563 0%, #6b7280 100%); /* Metallic grey gradient */
+            color: #f3f4f6;
+            padding: 6px 15px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 12px 12px 0 0; /* Match outer border radius */
+            border-bottom: 2px solid #000;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.6);
+            position: relative;
+            z-index: 2; /* Ensure it's above image */
+        }
+
+        .card-top-bar::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" fill="%23ffffff" opacity="0.1"><path d="M0 0h10v10H0zM20 0h10v10H20zM40 0h10v10H40zM60 0h10v10H60zM80 0h10v10H80zM0 20h10v10H0zM20 20h10v10H20zM40 20h10v10H40zM60 20h10v10H60zM80 20h10v10H80zM0 40h10v10H0zM20 40h10v10H20zM40 40h10v10H40zM60 40h10v10H60zM80 40h10v10H80zM0 60h10v10H0zM20 60h10v10H20zM40 60h10v10H40zM60 60h10v10H60zM80 60h10v10H80zM0 80h10v10H0zM20 80h10v10H20zM40 80h10v10H40zM60 80h10v10H60zM80 80h10v10H80z"/></svg>'); /* Subtle grid pattern */
+            pointer-events: none;
+            z-index: -1;
+            opacity: 0.1;
+        }
+
+
+        .card-name {
+            font-family: 'Roboto Condensed', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: #fde047; /* Yellow for contrast */
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+            margin-left: -5px; /* Adjust to align with BASIC */
+        }
+
+        /* Image Area */
+        .image-container {
+            flex-grow: 1; /* Take up remaining space */
+            background-color: #111827; /* Dark background for the art box */
+            border: 2px solid #000; /* Black border around image */
+            margin: 0 4px; /* Align with outer border */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden; /* Ensure image is clipped if needed */
+            position: relative;
+        }
+
+        .image-container img {
+            object-fit: contain; /* Ensure image fits without cropping too much */
+            width: 100%;
+            height: 100%;
+            border-radius: 4px;
+        }
+
+        /* Question Box (Ability/Attack Text Box) */
+        .question-box-wrapper {
+            background-color: #374151; /* Dark grey similar to card body */
+            padding: 8px 4px 4px 4px; /* Space for the border */
+            border-top: 2px solid #000; /* Top black border */
+            border-bottom-left-radius: 12px;
+            border-bottom-right-radius: 12px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .question-box {
+            background-color: #111827; /* Very dark background for text */
+            border: 2px solid #6b7280; /* Grey metallic border for the text box */
+            border-radius: 8px;
+            padding: 10px 15px;
+            text-align: center;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+        }
+
+        .question-text {
+            font-family: 'Roboto Condensed', sans-serif;
+            color: #ffffff; 
+            font-weight: 700;
+            line-height: 1.4;
+            font-size: 1.1rem; /* Slightly smaller for fitting */
         }
     </style>
 </head>
 
 <body class="flex flex-col min-h-screen">
 
-    <!-- Header Section (Dark Mode, TCG Red Theme) -->
-    <header class="bg-red-700 shadow-xl p-4 text-white">
+    <!-- Header Section (UI Font: Inter) --><header class="bg-red-700 shadow-xl p-4 text-white">
         <div class="max-w-4xl mx-auto flex justify-between items-center">
-            <!-- Title -->
             <h1 class="text-xl font-extrabold tracking-tight">⭐ Pokémon Card Battle</h1>
-            
-            <!-- Deck Status -->
             <p class="text-sm opacity-80" id="deck-status">Shuffling...</p>
         </div>
     </header>
 
-    <!-- Main Content Area -->
-    <main class="flex-grow flex items-center justify-center p-4">
-        <div class="w-full max-w-xl flex flex-col items-center space-y-8">
+    <!-- Main Content Area --><main class="flex-grow flex items-center justify-center p-4">
+        <div class="w-full flex flex-col items-center space-y-8">
 
-            <!-- Question Card Display -->
-            <div id="question-card" class="card bg-gray-700 w-full rounded-2xl p-4 sm:p-8 flex flex-col items-center justify-center text-center space-y-4">
-                <!-- Image Container (Hidden initially, shown when question is drawn) -->
-                <img id="question-image" 
-                     src="" 
-                     alt="Pokémon illustration related to the question" 
-                     class="w-32 h-32 sm:w-48 sm:h-48 object-contain rounded-lg shadow-lg transition-opacity duration-300 opacity-0" 
-                     onerror="this.style.display='none'">
+            <!-- Question Card Display (Authentic Basic Pokémon Style) --><div id="question-card" class="pokemon-card-outer">
                 
-                <!-- Question Text -->
-                <p id="question-text" class="question-text text-xl sm:text-2xl font-bold italic">
-                    Click 'Next Question' to begin the battle!
-                </p>
+                <!-- Card Top Section (BASIC / Name bar) --><div class="card-top-bar">
+                    <span>BASIC</span>
+                    <span id="card-name" class="card-name">QUESTION CARD</span>
+                </div>
+
+                <!-- Image/Illustration Area --><div class="image-container transition-opacity duration-300 opacity-0" id="image-frame">
+                    <img id="question-image" 
+                        src="" 
+                        alt="Pokémon illustration related to the question" 
+                        onerror="this.parentElement.classList.add('opacity-0');">
+                </div>
+                
+                <!-- Question Text Box (Ability/Attack like) --><div class="question-box-wrapper">
+                    <div class="question-box">
+                        <p id="question-text" class="question-text">
+                            Click 'Next Question' to begin the battle!
+                        </p>
+                    </div>
+                </div>
+
             </div>
 
-            <!-- Action Button -->
-            <button id="generate-button" 
+            <!-- Action Button (UI Font: Inter) --><button id="generate-button" 
                     class="btn-primary bg-red-600 hover:bg-red-700 text-white font-bold py-4 px-8 rounded-full shadow-lg w-full max-w-xs uppercase">
                 Next Question
             </button>
@@ -84,112 +186,110 @@
         </div>
     </main>
 
-    <!-- Footer for Info -->
-    <footer class="p-4 text-center text-xs text-gray-400">
+    <!-- Footer for Info (UI Font: Inter) --><footer class="p-4 text-center text-xs text-gray-400">
         <p>Game Format by Gemini. Use physical Veto Tokens for fair decisions!</p>
     </footer>
 
     <script>
         // --- Game Data and Logic ---
 
-        // IMPORTANT: The rawQuestions array now uses objects to hold the Portuguese text and an image URL.
-        // You can change the imageUrl for each question to link to your custom images!
+        // IMPORTANT: The rawQuestions array uses objects to hold the Portuguese text and an image URL.
         const rawQuestions = [
             {
                 text: "Esse Pokémon com certeza seria o Presidente do Brasil.",
-                imageUrl: "https://placehold.co/200x200/ffcc00/1f2937?text=PRE%20VOTE"
+                imageUrl: "https://i.imgur.com/uRj04m2.png" /* Example: Custom image from Imgur */
             },
             {
                 text: "Todo mundo chama esse Pokémon para assar as carnes do churrasco.",
-                imageUrl: "https://placehold.co/200x200/ffcc00/1f2937?text=CHURRASCO"
+                imageUrl: "https://placehold.co/200x200/4c4d51/ffffff?text=CHURRASCO"
             },
             {
                 text: "Esse Pokémon não perde nenhum jogo do Flamengo.",
-                imageUrl: "https://placehold.co/200x200/ffcc00/1f2937?text=FLAMENGO"
+                imageUrl: "https://placehold.co/200x200/4c4d51/ffffff?text=FLAMENGO"
             },
             {
                 text: "Qual Pokémon seria o melhor motorista de Uber no Rio de Janeiro?",
-                imageUrl: "https://placehold.co/200x200/ffcc00/1f2937?text=UBER"
+                imageUrl: "https://placehold.co/200x200/4c4d51/ffffff?text=UBER"
             },
             {
                 text: "O Pokémon que passaria o carnaval inteiro em Salvador.",
-                imageUrl: "https://placehold.co/200x200/ffcc00/1f2937?text=CARNAVAL"
+                imageUrl: "https://placehold.co/200x200/4c4d51/ffffff?text=CARNAVAL"
             },
             {
                 text: "Qual Pokémon conseguiria sobreviver ao trânsito de São Paulo?",
-                imageUrl: "https://placehold.co/200x200/ffcc00/1f2937?text=SP%20TRAFFIC"
+                imageUrl: "https://placehold.co/200x200/4c4d51/ffffff?text=SP%20TRAFFIC"
             },
             {
                 text: "Esse Pokémon seria o melhor jogador de futebol da seleção brasileira.",
-                imageUrl: "https://placehold.co/200x200/ffcc00/1f2937?text=FUTEBOL"
+                imageUrl: "https://placehold.co/200x200/4c4d51/ffffff?text=FUTEBOL"
             },
             {
                 text: "Qual Pokémon é o mais provável de aparecer na novela das nove?",
-                imageUrl: "https://placehold.co/200x200/ffcc00/1f2937?text=NOVELA"
+                imageUrl: "https://placehold.co/200x200/4c4d51/ffffff?text=NOVELA"
             },
             {
                 text: "Qual Pokémon é o mais provável de ser preso por furar a fila do INSS?",
-                imageUrl: "https://placehold.co/200x200/ffcc00/1f2937?text=INSS"
+                imageUrl: "https://placehold.co/200x200/4c4d51/ffffff?text=INSS"
             },
             {
                 text: "Que Pokémon daria o melhor garçom de uma padaria chique?",
-                imageUrl: "https://placehold.co/200x200/ffcc00/1f2937?text=GARÇOM"
+                imageUrl: "https://placehold.co/200x200/4c4d51/ffffff?text=GARÇOM"
             },
             {
                 text: "Esse Pokémon teria a melhor barraca de pastel na feira de domingo.",
-                imageUrl: "https://placehold.co/200x200/ffcc00/1f2937?text=PASTEL"
+                imageUrl: "https://placehold.co/200x200/4c4d51/ffffff?text=PASTEL"
             },
             {
                 text: "Qual Pokémon seria o mestre de capoeira mais temido da Bahia?",
-                imageUrl: "https://placehold.co/200x200/ffcc00/1f2937?text=CAPOEIRA"
+                imageUrl: "https://placehold.co/200x200/4c4d51/ffffff?text=CAPOEIRA"
             },
             {
                 text: "O Pokémon que só come feijoada no sábado.",
-                imageUrl: "https://placehold.co/200x200/ffcc00/1f2937?text=FEIJOADA"
+                imageUrl: "https://placehold.co/200x200/4c4d51/ffffff?text=FEIJOADA"
             },
             {
                 text: "Esse Pokémon tentaria vender 'Jequiti' na porta de casa.",
-                imageUrl: "https://placehold.co/200x200/ffcc00/1f2937?text=JEQUITI"
+                imageUrl: "https://placehold.co/200x200/4c4d51/ffffff?text=JEQUITI"
             },
             {
                 text: "Qual Pokémon seria o fiscal de rodovia mais rígido?",
-                imageUrl: "https://placehold.co/200x200/ffcc00/1f2937?text=FISCAL"
+                imageUrl: "https://placehold.co/200x200/4c4d51/ffffff?text=FISCAL"
             },
             {
                 text: "Que Pokémon seria o DJ mais famoso do funk carioca?",
-                imageUrl: "https://placehold.co/200x200/ffcc00/1f2937?text=FUNK"
+                imageUrl: "https://placehold.co/200x200/4c4d51/ffffff?text=FUNK"
             },
             {
                 text: "Esse Pokémon seria o melhor professor de português do ensino médio.",
-                imageUrl: "https://placehold.co/200x200/ffcc00/1f2937?text=PORTUGUES"
+                imageUrl: "https://placehold.co/200x200/4c4d51/ffffff?text=PORTUGUES"
             },
             {
                 text: "Qual Pokémon comeria o maior açaí com leite ninho?",
-                imageUrl: "https://placehold.co/200x200/ffcc00/1f2937?text=AÇAÍ"
+                imageUrl: "https://placehold.co/200x200/4c4d51/ffffff?text=AÇAÍ"
             },
             {
                 text: "O Pokémon que sempre pede desconto em tudo.",
-                imageUrl: "https://placehold.co/200x200/ffcc00/1f2937?text=DESCONTO"
+                imageUrl: "https://placehold.co/200x200/4c4d51/ffffff?text=DESCONTO"
             },
             {
                 text: "Qual Pokémon seria o melhor cantor de sertanejo universitário?",
-                imageUrl: "https://placehold.co/200x200/ffcc00/1f2937?text=SERTANEJO"
+                imageUrl: "https://placehold.co/200x200/4c4d51/ffffff?text=SERTANEJO"
             },
             {
                 text: "Esse Pokémon teria o melhor passinho de frevo em Olinda.",
-                imageUrl: "https://placehold.co/200x200/ffcc00/1f2937?text=FREVO"
+                imageUrl: "https://placehold.co/200x200/4c4d51/ffffff?text=FREVO"
             },
             {
                 text: "Qual Pokémon faria um protesto na Avenida Paulista?",
-                imageUrl: "https://placehold.co/200x200/ffcc00/1f2937?text=PROTESTO"
+                imageUrl: "https://placehold.co/200x200/4c4d51/ffffff?text=PROTESTO"
             },
             {
                 text: "Esse Pokémon daria o melhor comentarista de futebol de mesa.",
-                imageUrl: "https://placehold.co/200x200/ffcc00/1f2937?text=FUT%20MESA"
+                imageUrl: "https://placehold.co/200x200/4c4d51/ffffff?text=FUT%20MESA"
             },
             {
                 text: "O Pokémon que mais sabe fazer 'gambiarras' em casa.",
-                imageUrl: "https://placehold.co/200x200/ffcc00/1f2937?text=GAMBIARRA"
+                imageUrl: "https://placehold.co/200x200/4c4d51/ffffff?text=GAMBIARRA"
             }
         ];
 
@@ -214,7 +314,7 @@
             updateStatus();
         }
 
-        // Update the status display (Now in English)
+        // Update the status display
         function updateStatus() {
             const statusElement = document.getElementById('deck-status');
             const buttonElement = document.getElementById('generate-button');
@@ -237,7 +337,9 @@
         function drawNextQuestion() {
             const questionTextElement = document.getElementById('question-text');
             const questionImageElement = document.getElementById('question-image');
+            const imageFrameElement = document.getElementById('image-frame');
             const cardElement = document.getElementById('question-card');
+            const cardNameElement = document.getElementById('card-name');
 
             if (isDeckEmpty) {
                 // If deck is empty, re-initialize and draw the first card
@@ -249,32 +351,30 @@
                 const nextQuestion = questionDeck.pop();
                 drawnQuestions.push(nextQuestion);
 
-                // Update UI (Question remains in Portuguese)
+                // Update UI
                 questionTextElement.textContent = nextQuestion.text;
                 
                 // Update Image
                 questionImageElement.src = nextQuestion.imageUrl;
-                questionImageElement.classList.remove('opacity-0'); // Make image visible
+                imageFrameElement.classList.remove('opacity-0'); // Make image frame visible
                 
-                // Card visual feedback
-                cardElement.classList.remove('bg-gray-700');
-                cardElement.classList.add('bg-gray-600'); 
-
-                // Apply a simple transition class for visual effect
-                cardElement.style.transform = 'scale(0.98)';
+                // Update the card name in the top bar with a short version of the question or a generic "Question"
+                cardNameElement.textContent = "QUESTION"; // Could also be nextQuestion.text.substring(0, 15) + '...'
+                
+                // Card visual feedback (tap effect)
+                cardElement.classList.add('scale-95'); 
                 setTimeout(() => {
-                    cardElement.style.transform = 'scale(1.0)';
-                    cardElement.classList.remove('bg-gray-600');
-                    cardElement.classList.add('bg-gray-700');
-                }, 100);
+                    cardElement.classList.remove('scale-95');
+                }, 150);
 
                 if (questionDeck.length === 0) {
                     isDeckEmpty = true;
                 }
             } else {
-                // This block should only run if the deck was just re-initialized and is still empty (shouldn't happen)
+                // Deck End
                 questionTextElement.textContent = "Deck End! Reload the page or click 'Restart Game'.";
-                questionImageElement.classList.add('opacity-0'); // Hide image
+                imageFrameElement.classList.add('opacity-0'); // Hide image frame
+                cardNameElement.textContent = "END GAME";
                 isDeckEmpty = true;
             }
             updateStatus();
@@ -287,6 +387,8 @@
 
             // Set the initial card message
             document.getElementById('question-text').textContent = "Click 'Next Question' to begin the battle!";
+            document.getElementById('card-name').textContent = "BATTLE START";
+
 
             const generateButton = document.getElementById('generate-button');
             generateButton.addEventListener('click', drawNextQuestion);
