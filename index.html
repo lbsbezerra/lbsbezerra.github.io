@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,25 +9,26 @@
     <!-- Load Inter Font -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
-        /* Custom styles for Material Design look and feel */
+        /* Custom styles for Dark Mode and TCG Theme */
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #f0f4f8; /* Light background for a clean look */
+            background-color: #1f2937; /* Dark background */
+            color: #f3f4f6; /* Light text color */
         }
         .card {
-            /* Material Design shadow */
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+            /* Dark Material Design shadow */
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
             transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
-            border: 1px solid #e2e8f0;
+            border: 1px solid #374151; /* Darker border */
             min-height: 250px;
         }
         .card:hover {
-             /* Subtle lift on hover (for desktop) */
-             box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.05);
+             /* Subtle lift on hover */
+             box-shadow: 0 12px 20px rgba(0, 0, 0, 0.5);
         }
         .question-text {
-            /* Brazilian Flag colors for a theme hint */
-            color: #009639; 
+            /* TCG Gold/Yellow for contrast */
+            color: #ffcc00; 
         }
         .btn-primary {
             /* Material-style button */
@@ -36,6 +37,7 @@
         }
         .btn-primary:hover {
             transform: translateY(-1px);
+            /* Lighter shadow for hover effect */
             box-shadow: 0 4px 6px rgba(255, 255, 255, 0.3), 0 1px 3px rgba(255, 255, 255, 0.1);
         }
     </style>
@@ -43,11 +45,14 @@
 
 <body class="flex flex-col min-h-screen">
 
-    <!-- Header Section -->
-    <header class="bg-yellow-500 shadow-md p-4 text-white">
+    <!-- Header Section (Dark Mode, TCG Red Theme) -->
+    <header class="bg-red-700 shadow-xl p-4 text-white">
         <div class="max-w-4xl mx-auto flex justify-between items-center">
-            <h1 class="text-xl font-extrabold tracking-tight">🇧🇷 Card Battle</h1>
-            <p class="text-sm font-semibold opacity-80" id="deck-status">Baralhando...</p>
+            <!-- Title -->
+            <h1 class="text-xl font-extrabold tracking-tight">⭐ Pokémon Card Battle</h1>
+            
+            <!-- Deck Status -->
+            <p class="text-sm opacity-80" id="deck-status">Shuffling...</p>
         </div>
     </header>
 
@@ -56,54 +61,136 @@
         <div class="w-full max-w-xl flex flex-col items-center space-y-8">
 
             <!-- Question Card Display -->
-            <div id="question-card" class="card bg-white w-full rounded-2xl p-8 flex items-center justify-center text-center">
+            <div id="question-card" class="card bg-gray-700 w-full rounded-2xl p-4 sm:p-8 flex flex-col items-center justify-center text-center space-y-4">
+                <!-- Image Container (Hidden initially, shown when question is drawn) -->
+                <img id="question-image" 
+                     src="" 
+                     alt="Pokémon illustration related to the question" 
+                     class="w-32 h-32 sm:w-48 sm:h-48 object-contain rounded-lg shadow-lg transition-opacity duration-300 opacity-0" 
+                     onerror="this.style.display='none'">
+                
+                <!-- Question Text -->
                 <p id="question-text" class="question-text text-xl sm:text-2xl font-bold italic">
-                    Clique no botão abaixo para gerar a primeira pergunta!
+                    Click 'Next Question' to begin the battle!
                 </p>
             </div>
 
             <!-- Action Button -->
             <button id="generate-button" 
-                    class="btn-primary bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-8 rounded-full shadow-lg w-full max-w-xs uppercase">
-                Próxima Pergunta
+                    class="btn-primary bg-red-600 hover:bg-red-700 text-white font-bold py-4 px-8 rounded-full shadow-lg w-full max-w-xs uppercase">
+                Next Question
             </button>
 
         </div>
     </main>
 
     <!-- Footer for Info -->
-    <footer class="p-4 text-center text-sm text-gray-500">
-        <p>Formato de Jogo por Gemini. Use Veto Cards para decisões justas!</p>
+    <footer class="p-4 text-center text-xs text-gray-400">
+        <p>Game Format by Gemini. Use physical Veto Tokens for fair decisions!</p>
     </footer>
 
     <script>
         // --- Game Data and Logic ---
 
+        // IMPORTANT: The rawQuestions array now uses objects to hold the Portuguese text and an image URL.
+        // You can change the imageUrl for each question to link to your custom images!
         const rawQuestions = [
-            "Esse Pokémon com certeza seria o Presidente do Brasil.",
-            "Todo mundo chama esse Pokémon para assar as carnes do churrasco.",
-            "Esse Pokémon não perde nenhum jogo do Flamengo.",
-            "Qual Pokémon seria o melhor motorista de Uber no Rio de Janeiro?",
-            "O Pokémon que passaria o carnaval inteiro em Salvador.",
-            "Qual Pokémon conseguiria sobreviver ao trânsito de São Paulo?",
-            "Esse Pokémon seria o melhor jogador de futebol da seleção brasileira.",
-            "Qual Pokémon é o mais provável de aparecer na novela das nove?",
-            "Qual Pokémon é o mais provável de ser preso por furar a fila do INSS?",
-            "Que Pokémon daria o melhor garçom de uma padaria chique?",
-            "Esse Pokémon teria a melhor barraca de pastel na feira de domingo.",
-            "Qual Pokémon seria o mestre de capoeira mais temido da Bahia?",
-            "O Pokémon que só come feijoada no sábado.",
-            "Esse Pokémon tentaria vender 'Jequiti' na porta de casa.",
-            "Qual Pokémon seria o fiscal de rodovia mais rígido?",
-            "Que Pokémon seria o DJ mais famoso do funk carioca?",
-            "Esse Pokémon seria o melhor professor de português do ensino médio.",
-            "Qual Pokémon comeria o maior açaí com leite ninho?",
-            "O Pokémon que sempre pede desconto em tudo.",
-            "Qual Pokémon seria o melhor cantor de sertanejo universitário?",
-            "Esse Pokémon teria o melhor passinho de frevo em Olinda.",
-            "Qual Pokémon faria um protesto na Avenida Paulista?",
-            "Esse Pokémon daria o melhor comentarista de futebol de mesa.",
-            "O Pokémon que mais sabe fazer 'gambiarras' em casa."
+            {
+                text: "Esse Pokémon com certeza seria o Presidente do Brasil.",
+                imageUrl: "https://placehold.co/200x200/ffcc00/1f2937?text=PRE%20VOTE"
+            },
+            {
+                text: "Todo mundo chama esse Pokémon para assar as carnes do churrasco.",
+                imageUrl: "https://placehold.co/200x200/ffcc00/1f2937?text=CHURRASCO"
+            },
+            {
+                text: "Esse Pokémon não perde nenhum jogo do Flamengo.",
+                imageUrl: "https://placehold.co/200x200/ffcc00/1f2937?text=FLAMENGO"
+            },
+            {
+                text: "Qual Pokémon seria o melhor motorista de Uber no Rio de Janeiro?",
+                imageUrl: "https://placehold.co/200x200/ffcc00/1f2937?text=UBER"
+            },
+            {
+                text: "O Pokémon que passaria o carnaval inteiro em Salvador.",
+                imageUrl: "https://placehold.co/200x200/ffcc00/1f2937?text=CARNAVAL"
+            },
+            {
+                text: "Qual Pokémon conseguiria sobreviver ao trânsito de São Paulo?",
+                imageUrl: "https://placehold.co/200x200/ffcc00/1f2937?text=SP%20TRAFFIC"
+            },
+            {
+                text: "Esse Pokémon seria o melhor jogador de futebol da seleção brasileira.",
+                imageUrl: "https://placehold.co/200x200/ffcc00/1f2937?text=FUTEBOL"
+            },
+            {
+                text: "Qual Pokémon é o mais provável de aparecer na novela das nove?",
+                imageUrl: "https://placehold.co/200x200/ffcc00/1f2937?text=NOVELA"
+            },
+            {
+                text: "Qual Pokémon é o mais provável de ser preso por furar a fila do INSS?",
+                imageUrl: "https://placehold.co/200x200/ffcc00/1f2937?text=INSS"
+            },
+            {
+                text: "Que Pokémon daria o melhor garçom de uma padaria chique?",
+                imageUrl: "https://placehold.co/200x200/ffcc00/1f2937?text=GARÇOM"
+            },
+            {
+                text: "Esse Pokémon teria a melhor barraca de pastel na feira de domingo.",
+                imageUrl: "https://placehold.co/200x200/ffcc00/1f2937?text=PASTEL"
+            },
+            {
+                text: "Qual Pokémon seria o mestre de capoeira mais temido da Bahia?",
+                imageUrl: "https://placehold.co/200x200/ffcc00/1f2937?text=CAPOEIRA"
+            },
+            {
+                text: "O Pokémon que só come feijoada no sábado.",
+                imageUrl: "https://placehold.co/200x200/ffcc00/1f2937?text=FEIJOADA"
+            },
+            {
+                text: "Esse Pokémon tentaria vender 'Jequiti' na porta de casa.",
+                imageUrl: "https://placehold.co/200x200/ffcc00/1f2937?text=JEQUITI"
+            },
+            {
+                text: "Qual Pokémon seria o fiscal de rodovia mais rígido?",
+                imageUrl: "https://placehold.co/200x200/ffcc00/1f2937?text=FISCAL"
+            },
+            {
+                text: "Que Pokémon seria o DJ mais famoso do funk carioca?",
+                imageUrl: "https://placehold.co/200x200/ffcc00/1f2937?text=FUNK"
+            },
+            {
+                text: "Esse Pokémon seria o melhor professor de português do ensino médio.",
+                imageUrl: "https://placehold.co/200x200/ffcc00/1f2937?text=PORTUGUES"
+            },
+            {
+                text: "Qual Pokémon comeria o maior açaí com leite ninho?",
+                imageUrl: "https://placehold.co/200x200/ffcc00/1f2937?text=AÇAÍ"
+            },
+            {
+                text: "O Pokémon que sempre pede desconto em tudo.",
+                imageUrl: "https://placehold.co/200x200/ffcc00/1f2937?text=DESCONTO"
+            },
+            {
+                text: "Qual Pokémon seria o melhor cantor de sertanejo universitário?",
+                imageUrl: "https://placehold.co/200x200/ffcc00/1f2937?text=SERTANEJO"
+            },
+            {
+                text: "Esse Pokémon teria o melhor passinho de frevo em Olinda.",
+                imageUrl: "https://placehold.co/200x200/ffcc00/1f2937?text=FREVO"
+            },
+            {
+                text: "Qual Pokémon faria um protesto na Avenida Paulista?",
+                imageUrl: "https://placehold.co/200x200/ffcc00/1f2937?text=PROTESTO"
+            },
+            {
+                text: "Esse Pokémon daria o melhor comentarista de futebol de mesa.",
+                imageUrl: "https://placehold.co/200x200/ffcc00/1f2937?text=FUT%20MESA"
+            },
+            {
+                text: "O Pokémon que mais sabe fazer 'gambiarras' em casa.",
+                imageUrl: "https://placehold.co/200x200/ffcc00/1f2937?text=GAMBIARRA"
+            }
         ];
 
         let questionDeck = [];
@@ -127,28 +214,29 @@
             updateStatus();
         }
 
-        // Update the status display
+        // Update the status display (Now in English)
         function updateStatus() {
             const statusElement = document.getElementById('deck-status');
             const buttonElement = document.getElementById('generate-button');
             const remaining = questionDeck.length;
 
             if (isDeckEmpty) {
-                statusElement.textContent = "Baralho Vazio! Clique para recomeçar.";
-                buttonElement.textContent = "Recomeçar Jogo";
-                buttonElement.classList.remove('bg-blue-600', 'hover:bg-blue-700');
+                statusElement.textContent = "Deck Empty! Click to restart.";
+                buttonElement.textContent = "Restart Game";
+                buttonElement.classList.remove('bg-red-600', 'hover:bg-red-700');
                 buttonElement.classList.add('bg-green-600', 'hover:bg-green-700');
             } else {
-                statusElement.textContent = `Perguntas restantes: ${remaining}/${rawQuestions.length}`;
-                buttonElement.textContent = "Próxima Pergunta";
+                statusElement.textContent = `Questions remaining: ${remaining}/${rawQuestions.length}`;
+                buttonElement.textContent = "Next Question";
                 buttonElement.classList.remove('bg-green-600', 'hover:bg-green-700');
-                buttonElement.classList.add('bg-blue-600', 'hover:bg-blue-700');
+                buttonElement.classList.add('bg-red-600', 'hover:bg-red-700');
             }
         }
 
         // Draw the next question
         function drawNextQuestion() {
             const questionTextElement = document.getElementById('question-text');
+            const questionImageElement = document.getElementById('question-image');
             const cardElement = document.getElementById('question-card');
 
             if (isDeckEmpty) {
@@ -157,21 +245,27 @@
             }
 
             if (questionDeck.length > 0) {
-                // Draw the question from the top of the shuffled deck
+                // Draw the question object from the top of the shuffled deck
                 const nextQuestion = questionDeck.pop();
                 drawnQuestions.push(nextQuestion);
 
-                // Update UI
-                questionTextElement.textContent = nextQuestion;
-                cardElement.classList.remove('bg-white');
-                cardElement.classList.add('bg-lime-100'); // Change color slightly to indicate refresh
+                // Update UI (Question remains in Portuguese)
+                questionTextElement.textContent = nextQuestion.text;
+                
+                // Update Image
+                questionImageElement.src = nextQuestion.imageUrl;
+                questionImageElement.classList.remove('opacity-0'); // Make image visible
+                
+                // Card visual feedback
+                cardElement.classList.remove('bg-gray-700');
+                cardElement.classList.add('bg-gray-600'); 
 
                 // Apply a simple transition class for visual effect
-                cardElement.style.transform = 'scale(0.95)';
+                cardElement.style.transform = 'scale(0.98)';
                 setTimeout(() => {
                     cardElement.style.transform = 'scale(1.0)';
-                    cardElement.classList.remove('bg-lime-100');
-                    cardElement.classList.add('bg-white');
+                    cardElement.classList.remove('bg-gray-600');
+                    cardElement.classList.add('bg-gray-700');
                 }, 100);
 
                 if (questionDeck.length === 0) {
@@ -179,7 +273,8 @@
                 }
             } else {
                 // This block should only run if the deck was just re-initialized and is still empty (shouldn't happen)
-                questionTextElement.textContent = "Fim do Baralho! Recarregue a página ou clique em 'Recomeçar'.";
+                questionTextElement.textContent = "Deck End! Reload the page or click 'Restart Game'.";
+                questionImageElement.classList.add('opacity-0'); // Hide image
                 isDeckEmpty = true;
             }
             updateStatus();
@@ -189,6 +284,9 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             initializeDeck(); // Shuffle the deck on page load
+
+            // Set the initial card message
+            document.getElementById('question-text').textContent = "Click 'Next Question' to begin the battle!";
 
             const generateButton = document.getElementById('generate-button');
             generateButton.addEventListener('click', drawNextQuestion);
