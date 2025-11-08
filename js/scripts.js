@@ -54,42 +54,34 @@ const rawQuestions = [
         text: "Esse Pokémon tentaria vender 'Jequiti' na porta de casa.",
         imageUrl: "./assets/img/jequiti.png"
     },
-    /*{
-        text: "Qual Pokémon seria o fiscal de rodovia mais rígido?",
-        imageUrl: "https://placehold.co/200x200/4c4d51/ffffff?text=FISCAL"
-    },*/
     {
         text: "Que Pokémon seria o DJ mais famoso do funk carioca?",
         imageUrl: "./assets/img/funk.png"
     },
-    /*{
+    {
         text: "Esse Pokémon seria o melhor professor de português do ensino médio.",
-        imageUrl: "https://placehold.co/200x200/4c4d51/ffffff?text=PORTUGUES"
-    },*/
+        imageUrl: "./assets/img/professor.png"
+    },
     {
         text: "Qual Pokémon comeria o maior açaí com leite ninho?",
         imageUrl: "./assets/img/acai.png"
     },
-    /*{
+    {
         text: "O Pokémon que sempre pede desconto em tudo.",
-        imageUrl: "https://placehold.co/200x200/4c4d51/ffffff?text=DESCONTO"
-    },*/
+        imageUrl: "./assets/img/desconto.png"
+    },
     {
         text: "Qual Pokémon seria o melhor cantor de sertanejo universitário?",
         imageUrl: "./assets/img/sertanejo.png"
     },
-    /*{
+    {
         text: "Esse Pokémon teria o melhor passinho de frevo em Olinda.",
-        imageUrl: "https://placehold.co/200x200/4c4d51/ffffff?text=FREVO"
-    },*/
+        imageUrl: "./assets/img/frevo.png"
+    },
     {
         text: "Qual Pokémon faria um protesto na Avenida Paulista?",
         imageUrl: "./assets/img/protesto.png"
     },
-    /*{
-        text: "Esse Pokémon daria o melhor comentarista de futebol de mesa.",
-        imageUrl: "https://placehold.co/200x200/4c4d51/ffffff?text=FUT%20MESA"
-    },*/
     /*{
         text: "O Pokémon que usa chinelo de dedo para ir a qualquer lugar, inclusive casamentos.",
         imageUrl: "https://placehold.co/200x200/4c4d51/ffffff?text=CHINELO"
@@ -100,12 +92,8 @@ const rawQuestions = [
     },
     {
         text: "Qual Pokémon adora assistir Fórmula 1, mas só o GP do Brasil?",
-        imageUrl: "https://placehold.co/200x200/4c4d51/ffffff?text=F1+BRASIL"
+        imageUrl: "./assets/img/f1.png"
     },
-    /*{
-        text: "Esse Pokémon insiste em chamar biscoito de 'bolacha'.",
-        imageUrl: "https://placehold.co/200x200/4c4d51/ffffff?text=BISCOITO"
-    },*/
     {
         text: "Esse Pokémon passaria horas preparando o chimarrão perfeito.",
         imageUrl: "./assets/img/chimarrao.png"
@@ -114,11 +102,6 @@ const rawQuestions = [
         text: "Qual Pokémon seria o melhor guia turístico nos Lençóis Maranhenses?",
         imageUrl: "./assets/img/lencois.png"
     },
-    /*{
-    {
-        text: "Qual Pokémon ligaria para a mãe no 'Show do Milhão' e ela só daria bronca em vez da resposta?",
-        imageUrl: "https://placehold.co/200x200/4c4d51/ffffff?text=LIGAR+P%2F+MAE"
-    },*/
     {
         text: "O Pokémon que mais sabe fazer 'gambiarras' em casa.",
         imageUrl: "./assets/img/gambiarra.png"
