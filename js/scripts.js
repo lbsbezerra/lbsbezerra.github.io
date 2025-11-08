@@ -83,7 +83,7 @@ const rawQuestions = [
         imageUrl: "./assets/img/protesto.png"
     },
     /*{
-        text: "O Pokémon que usa chinelo de dedo para ir a qualquer lugar, inclusive casamentos.",
+        text: "Oa Pokémon que usa chinelo de dedo para ir a qualquer lugar, inclusive casamentos.",
         imageUrl: "https://placehold.co/200x200/4c4d51/ffffff?text=CHINELO"
     },*/
     {
